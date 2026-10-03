@@ -1,6 +1,9 @@
 ---
 title: 保证金与并发预留实验
+type: book
+weight: 20
 ---
+
 
 # A. 逐仓阈值
 

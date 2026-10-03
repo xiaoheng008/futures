@@ -1,6 +1,9 @@
 ---
 title: 强平与保险基金实验
+type: book
+weight: 20
 ---
+
 
 # 假设
 

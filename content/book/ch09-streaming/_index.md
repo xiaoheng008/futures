@@ -1,7 +1,11 @@
 ---
 title: 行情推送如何在断线后重新连续？
-weight: 10
+type: book
+book_number: 9
+book_status: draft
+weight: 90
 ---
+
 
 # 问题：本地簿看起来完整，可能已经错了
 
@@ -51,7 +55,7 @@ Bybit 公开订单簿流先发 snapshot，再发 delta；出现新 snapshot 时�
 
 # 实验
 
-完成 [流连续性实验](../experiments/stream-recovery.md)，手动删除、重复和乱序增量，定义每种情况的恢复动作。
+完成 [流连续性实验](lab.md)，手动删除、重复和乱序增量，定义每种情况的恢复动作。
 
 # 新问题：大量客户端同时重建，会不会压垮服务？
 

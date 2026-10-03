@@ -1,7 +1,11 @@
 ---
 title: 最新成交价为什么不能单独触发强平？
-weight: 7
+type: book
+book_number: 6
+book_status: draft
+weight: 60
 ---
+
 
 # 问题：盘口里一笔小成交，能让整个账户被强平吗？
 
@@ -36,10 +40,10 @@ Bybit 的公开说明将 Mark 用于未实现盈亏和强平触发；其构造�
 
 教学模型只讨论线性合约：
 
-```text
-Funding Fee = 结算时仓位名义价值 × Funding Rate
-名义价值 = 仓位数量 × 结算所用参考价格
-```
+\[\begin{aligned}
+\mathrm{FundingFee} &= \text{结算时仓位名义价值}\times\text{FundingRate}\\
+\text{名义价值} &= \text{仓位数量}\times\text{结算所用参考价格}
+\end{aligned}\]
 
 示例：持有 `0.01 BTC`，结算 mark 为 `60,500 USDT/BTC`，资金费率 `+0.01%`，则名义价值为 `605 USDT`，费用大小为 `605 × 0.0001 = 0.0605 USDT`。在本例设定的正向约定下，多头支付 0.0605 USDT，空头收到同额。
 
@@ -53,7 +57,7 @@ Funding Fee = 结算时仓位名义价值 × Funding Rate
 
 # 实验
 
-完成 [价格与资金费实验](../experiments/prices-funding.md)：同一时刻放入 Last、Index、Mark 三条序列，观察 UPL 和风险触发差异，再加入周期 funding 事件。
+完成 [价格与资金费实验](lab.md)：同一时刻放入 Last、Index、Mark 三条序列，观察 UPL 和风险触发差异，再加入周期 funding 事件。
 
 # 新问题：风险线被触及时，如何把仓位缩下来？
 
