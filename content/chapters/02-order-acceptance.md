@@ -1,6 +1,6 @@
 ---
 title: 你说“下单成功”时，系统究竟承诺了什么？
-weight: 2
+weight: 3
 ---
 
 # 问题
@@ -27,7 +27,7 @@ NEW → ACCEPTED → (PARTIALLY_FILLED)* → FILLED
 NEW/ACCEPTED → REJECTED
 ```
 
-这只是教学模型。具体交易所的状态名、终态规则和事件字段以对应 API 文档为准。核心观察是：**响应确认请求被接收，不等价于成交确认**。Bybit 明确说明创建订单响应是异步接受确认，应通过 WebSocket 确认订单状态；OKX 提供订单频道推送新订单或订单更新；Binance 的合约用户数据流包含订单/成交更新事件。[Bybit 下单接口](https://bybit-exchange.github.io/docs/v5/order/create-order) · [OKX API 文档](https://app.okx.com/docs-v5/en/) · [Binance 用户数据流](https://developers.binance.com/en/docs/products/derivatives-trading-coin-futures/user-data-streams)
+这只是教学模型。具体交易所的状态名、终态规则和事件字段以对应 API 文档为准。核心观察是：**响应确认请求被接收，不等价于成交确认**。Bybit 明确说明创建订单响应是异步接受确认，应通过 WebSocket 确认订单状态；OKX 的订单频道首次订阅不推存量快照，只推新订单或更新；Binance 在 2026 年公告中将 USDⓈ-M WebSocket 路由拆分为 public、market、private 类别。它们的细节不同，但都提醒我们：客户端确认、状态查询和异步事件必须分别建模。[Bybit 下单接口](https://bybit-exchange.github.io/docs/v5/order/create-order) · [OKX API 文档](https://app.okx.com/docs-v5/en/) · [Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)
 
 # 概念：命令、状态和事实
 
