@@ -1,0 +1,82 @@
+sections:
+  - hero
+  - steps
+  - type: cards
+    key: chapters
+  - type: markdown
+    key: status
+  - cta
+
+hero:
+  eyebrow: Evo-Learn · 演进式学习
+  title_lines:
+    - 从一张合约，
+    - 到一套风险闭环
+  desc: 面向有后端开发基础的读者，沿着一笔合约委托，逐步推导订单、撮合、账本、保证金、强平与恢复系统。
+  note: 参考主流交易所公开产品规则与 API；内部架构内容均明确作为教学设计。
+  actions:
+    - label: 从第 1 章开始
+      url: book/ch01-contract-spec/
+      icon: fa-solid fa-book-open
+      style: primary
+    - label: 查看课程路线
+      url: roadmap/
+      icon: fa-solid fa-route
+      style: ghost
+
+steps:
+  eyebrow: 学习主线
+  title: 一个问题，如何逼出下一层系统能力？
+  desc: 每一章从旧办法遇到的限制出发，推导出新的抽象与不变量。
+  items:
+    - title: 合约规格
+      desc: 先说清数量、价格、精度和结算单位，订单才有可校验的含义。
+      icon: fa-solid fa-ruler-combined
+    - title: 订单接入与撮合
+      desc: 校验订单意图，再用确定的价格优先、时间优先规则处理竞争。
+      icon: fa-solid fa-arrow-right-arrow-left
+    - title: 成交与账本
+      desc: 把撮合结果变成可去重、可追溯的账户状态和持仓变化。
+      icon: fa-solid fa-book
+    - title: 保证金与价格
+      desc: 将持仓、挂单和可信参考价格放进统一风险判断。
+      icon: fa-solid fa-scale-balanced
+    - title: 强平与缺口处理
+      desc: 风险越界后有序减仓，并定义保险基金等后续处置边界。
+      icon: fa-solid fa-shield-halved
+    - title: 故障恢复与实时推送
+      desc: 通过日志重放、快照和序列号，让系统在中断后恢复一致状态。
+      icon: fa-solid fa-tower-broadcast
+
+chapters:
+  eyebrow: 已有章节
+  title: 从这里开始逐章阅读
+  desc: 第 1–9 章已有正文初稿与配套实验，仍待统一技术审校。
+  columns: 3
+  link_label: 阅读章节
+  items:
+    - { title: 第 1 章 · 合约规格, desc: 从交易单位与精度出发，建立订单校验的共同语言。, url: book/ch01-contract-spec/, icon: fa-solid fa-ruler-combined }
+    - { title: 第 2 章 · 订单接入, desc: 从请求校验、幂等键和状态转换开始。, url: book/ch02-order-acceptance/, icon: fa-solid fa-inbox }
+    - { title: 第 3 章 · 订单簿, desc: 推导价格优先、时间优先和撮合边界。, url: book/ch03-order-book/, icon: fa-solid fa-list }
+    - { title: 第 4 章 · 账本与持仓, desc: 让成交可靠地转化为资产、余额与仓位变化。, url: book/ch04-ledger-position/, icon: fa-solid fa-book }
+    - { title: 第 5 章 · 保证金与风险, desc: 把已有仓位、活动挂单和可用额度一起计算。, url: book/ch05-margin-risk/, icon: fa-solid fa-scale-balanced }
+    - { title: 第 6 章 · 价格与资金费, desc: 区分最新价、指数价、标记价及资金费结算。, url: book/ch06-prices-funding/, icon: fa-solid fa-chart-line }
+    - { title: 第 7 章 · 强平, desc: 从风险触发推到减仓、破产价与缺口处置。, url: book/ch07-liquidation/, icon: fa-solid fa-shield-halved }
+    - { title: 第 8 章 · 故障恢复, desc: 通过日志、快照和重放恢复一致状态。, url: book/ch08-recovery/, icon: fa-solid fa-rotate }
+    - { title: 第 9 章 · 实时推送, desc: 用序列号、确认游标和快照重同步连接状态。, url: book/ch09-streaming/, icon: fa-solid fa-tower-broadcast }
+
+status:
+  eyebrow: 编写进度
+  title: 初稿与计划分开标注
+  body: |
+    **已有工作初稿：第 1–9 章。**每章包含正文和配套实验，仍待统一技术审校。
+
+    **计划编写：第 10 章容量与运营、第 11 章端到端重建。**它们尚未作为已完成章节发布。完整状态见[课程路线](roadmap/)。
+
+cta:
+  title: 想先看系统如何逐步演化？
+  desc: 打开演进地图，查看每个抽象如何从前一个问题中长出来。
+  label: 查看演进地图
+  url: docs/evolution-map/
+  style: primary
+  icon: fa-solid fa-arrow-right
