@@ -24,9 +24,9 @@ hero:
       style: ghost
 
 chapters:
-  eyebrow: 已有章节
+  eyebrow: 全部 11 章均有工作初稿
   title: 从这里开始逐章阅读
-  desc: 第 1–9 章已有正文初稿与配套实验，仍待统一技术审校。
+  desc: 每章从具体问题出发，沿着递进例子与系统图推导关键不变量，并附实验和重建练习；全书仍待统一技术审校。
   columns: 3
   link_label: 阅读章节
   items:
@@ -39,14 +39,16 @@ chapters:
     - { title: 第 7 章 · 强平, desc: 从风险触发推到减仓、破产价与缺口处置。, url: book/ch07-liquidation/, icon: fa-solid fa-shield-halved }
     - { title: 第 8 章 · 故障恢复, desc: 通过日志、快照和重放恢复一致状态。, url: book/ch08-recovery/, icon: fa-solid fa-rotate }
     - { title: 第 9 章 · 实时推送, desc: 用序列号、确认游标和快照重同步连接状态。, url: book/ch09-streaming/, icon: fa-solid fa-tower-broadcast }
+    - { title: 第 10 章 · 容量与运营, desc: 用队列算例推导限流、过载拒绝、降级和正确性监控。, url: book/ch10-capacity-operations/, icon: fa-solid fa-gauge-high }
+    - { title: 第 11 章 · 端到端重建, desc: 从同一笔委托串起撮合、账本、风控、恢复与容量保护。, url: book/ch11-end-to-end-reconstruction/, icon: fa-solid fa-diagram-project }
 
 status:
   eyebrow: 编写进度
   title: 初稿与计划分开标注
   body: |
-    **已有工作初稿：第 1–9 章。**每章包含正文和配套实验，仍待统一技术审校。
+    **已有工作初稿：第 1–11 章。**每章包含正文、递进例子、图示和配套实验，仍待统一技术审校。
 
-    **计划编写：第 10 章容量与运营、第 11 章端到端重建。**它们尚未作为已完成章节发布。完整状态见[课程路线](roadmap/)。
+    完整目录和后续审校任务见[课程路线](roadmap/)。
 
 cta:
   title: 想先看系统如何逐步演化？
