@@ -30,7 +30,8 @@ flowchart LR
   N[NEW] -->|校验通过| A[ACCEPTED]
   N -->|校验失败| R[REJECTED]
   A -->|尚未成交| O[挂单中]
-  A -->|立即成交| P[部分成交]
+  A -->|部分成交| P[部分成交]
+  A -->|全部成交| F[FILLED]
   O -->|首次成交| P
   P -->|还有剩余| P
   P -->|全部成交| F[FILLED]

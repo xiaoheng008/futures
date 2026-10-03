@@ -47,7 +47,7 @@ flowchart LR
 
 主流交易所公开配额采用的维度和反馈方式并不相同：
 
-- Binance USDⓈ-M 文档区分 request weight 与订单数量限制，并通过响应头暴露已使用权重；超限会返回 `429`。[Binance USDⓈ-M API limits](https://developers.binance.com/zh-CN/docs/products/derivatives-trading-usds-futures/common-definition)
+- Binance USDⓈ-M 文档分别定义 `REQUEST_WEIGHT` 与 `ORDERS` 限额；Binance 的另一份衍生品 API 通用说明明确写出超限时返回 `429`、提供已用权重响应头和重试等待信息。它们说明的是公开 API 契约，不代表内部服务限流实现。[USDⓈ-M 限额定义](https://developers.binance.com/zh-CN/docs/products/derivatives-trading-usds-futures/common-definition)；[Portfolio Margin Pro 通用限流说明](https://developers.binance.com/en/docs/products/derivatives-trading-portfolio-margin-pro/general-info)
 - Bybit 文档同时列出 IP 级 HTTP 限制与按 UID/时间窗划分的 API 限制，并为请求返回剩余配额和重置时间等头字段。[Bybit Rate Limit Rules](https://bybit-exchange.github.io/docs/v5/rate-limit)
 - OKX 将许多交易相关的 REST 与 WebSocket 请求共享限额，并按 User ID、Instrument ID 等规则区分操作类别。[OKX API Rate Limits](https://app.okx.com/docs-v5/en/#overview-rate-limits)
 
