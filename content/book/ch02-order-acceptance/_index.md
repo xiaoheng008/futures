@@ -25,11 +25,30 @@ Alice 发送一个 BTC-USDT 买入限价单：价格 60,000，数量 0.01。接�
 
 定义一个最小生命周期：
 
-```text
-NEW → ACCEPTED → (PARTIALLY_FILLED)* → FILLED
-                         └────────────→ CANCELED
-NEW/ACCEPTED → REJECTED
+```mermaid
+flowchart LR
+  N[NEW] -->|校验通过| A[ACCEPTED]
+  N -->|校验失败| R[REJECTED]
+  A -->|尚未成交| O[挂单中]
+  A -->|立即成交| P[部分成交]
+  O -->|首次成交| P
+  P -->|还有剩余| P
+  P -->|全部成交| F[FILLED]
+  O -->|撤单成功| C[CANCELED]
+  P -->|剩余量撤销| C
 ```
+
+## 例子：从请求到最终状态，按时间走一遍
+
+Alice 提交 `BUY 0.01 @ 60,000`。先假设卖盘没有可成交价格：
+
+1. 服务校验规格、精度和风险，创建唯一 `order_id`，状态进入 `ACCEPTED`。
+2. 委托进入订单簿，状态成为活动挂单；API 返回的是已接受，不是已成交。
+3. 稍后卖方成交 `0.004 BTC`，订单变为部分成交，剩余量是 `0.006 BTC`。
+4. 若 Alice 的客户端超时并用相同幂等键重试，系统应返回原订单结果，而不是再创建一张 `0.01 BTC` 委托。
+5. 后续撤单确认只阻止剩余 `0.006 BTC` 继续成交；已发生的 `0.004 BTC` 成交仍是有效事实。
+
+每一步都能用数量守恒检查：`0.01 = 0.004 + 0.006`。幂等键处理重复命令，成交 ID 处理重复成交；两者解决的是不同问题。
 
 这只是教学模型。具体交易所的状态名、终态规则和事件字段以对应 API 文档为准。核心观察是：**响应确认请求被接收，不等价于成交确认**。Bybit 明确说明创建订单响应是异步接受确认，应通过 WebSocket 确认订单状态；OKX 的订单频道首次订阅不推存量快照，只推新订单或更新；Binance 在 2026 年公告中将 USDⓈ-M WebSocket 路由拆分为 public、market、private 类别。它们的细节不同，但都提醒我们：客户端确认、状态查询和异步事件必须分别建模。[Bybit 下单接口](https://bybit-exchange.github.io/docs/v5/order/create-order) · [OKX API 文档](https://app.okx.com/docs-v5/en/) · [Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)
 

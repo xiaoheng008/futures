@@ -27,13 +27,16 @@ Bybit 的公开保险基金说明将实际执行价与破产价的差额作为�
 
 用以下状态作为教学模型：
 
-```text
-HEALTHY
-  → WARNING
-  → CANCEL_RISK_INCREASING_ORDERS
-  → REDUCE_OR_LIQUIDATE
-  → SETTLE_EXECUTION
-  → RECOVERED | INSURANCE_FUND | ADL
+```mermaid
+flowchart TD
+  H[HEALTHY] --> W[达到预警条件]
+  W --> C[取消或限制增加风险的挂单]
+  C --> D[重新计算风险并减仓/强平]
+  D --> E[按实际成交结算]
+  E --> Q{仓位风险是否恢复?}
+  Q -->|是| R[恢复正常状态]
+  Q -->|否，且仍有缺口| I[按产品规则使用保险基金或其他机制]
+  I --> A[必要时进入 ADL 等后续处理]
 ```
 
 这个状态机不是所有交易所的流程照搬。它暴露出必须回答的工程问题：

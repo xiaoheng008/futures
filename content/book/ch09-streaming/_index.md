@@ -33,6 +33,18 @@ weight: 90
 5. 重新取快照，并按协议处理快照期间缓存的增量；不能简单把最新一条 delta 当成新快照。
 6. 对下游标出数据新鲜度和连续性状态，避免把修复中的簿用于交易决策。
 
+```mermaid
+flowchart TD
+  S[收到快照] --> V[建立可信本地簿与序号]
+  V --> D[收到下一条增量]
+  D --> C{序号连续且数据有效?}
+  C -->|是| U[应用增量并继续接收]
+  U --> D
+  C -->|否| X[标记本地簿不可信并停止下游使用]
+  X --> R[重新订阅并取得新快照]
+  R --> V
+```
+
 Bybit 公开订单簿流先发 snapshot，再发 delta；出现新 snapshot 时客户端应重置本地簿。[Bybit Orderbook](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook) OKX 的变更日志要求特定增量频道用 `seqId/prevSeqId` 检查连续性，并明确旧 checksum 字段不再作为有效完整性校验。[OKX API Changelog](https://app.okx.com/docs-v5/log_en/)
 
 # 私有事件流的恢复不完全相同
