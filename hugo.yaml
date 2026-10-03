@@ -1,4 +1,4 @@
-title: 合约交易所核心系统
+title: 数字资产永续合约交易系统
 baseURL: https://xiaoheng008.github.io/futures/
 defaultContentLanguage: zh
 enableGitInfo: true
@@ -8,7 +8,7 @@ timeZone: UTC
 languages:
   zh:
     locale: zh-CN
-    title: 合约交易所核心系统
+    title: 数字资产永续合约交易系统
     weight: 1
     hasCJKLanguage: true
 
@@ -40,7 +40,7 @@ markup:
           inline: [["\\(", "\\)"]]
 
 params:
-  description: 从一笔委托推导数字资产合约交易所核心系统
+  description: 从一笔委托推导中心化交易所永续合约的撮合、账本、风险与恢复核心链路
   offline_search: true
   ui:
     docs_section: docs

@@ -1,6 +1,5 @@
 sections:
   - hero
-  - steps
   - type: cards
     key: chapters
   - type: markdown
@@ -8,12 +7,12 @@ sections:
   - cta
 
 hero:
-  eyebrow: Evo-Learn · 演进式学习
+  eyebrow: 教程主题 · 中心化交易所线性永续合约
   title_lines:
-    - 从一张合约，
-    - 到一套风险闭环
-  desc: 面向有后端开发基础的读者，沿着一笔合约委托，逐步推导订单、撮合、账本、保证金、强平与恢复系统。
-  note: 参考主流交易所公开产品规则与 API；内部架构内容均明确作为教学设计。
+    - 一笔委托
+    - 如何走完全程？
+  desc: 以一笔 BTC-USDT 线性永续委托为主线，讲清规格校验、订单接入、撮合、账本、保证金、强平与故障恢复。
+  note: 以公开产品规则与 API 为外部依据；交易所未公开的内部架构均标注为教学参考设计。
   actions:
     - label: 从第 1 章开始
       url: book/ch01-contract-spec/
@@ -23,30 +22,6 @@ hero:
       url: roadmap/
       icon: fa-solid fa-route
       style: ghost
-
-steps:
-  eyebrow: 学习主线
-  title: 一个问题，如何逼出下一层系统能力？
-  desc: 每一章从旧办法遇到的限制出发，推导出新的抽象与不变量。
-  items:
-    - title: 合约规格
-      desc: 先说清数量、价格、精度和结算单位，订单才有可校验的含义。
-      icon: fa-solid fa-ruler-combined
-    - title: 订单接入与撮合
-      desc: 校验订单意图，再用确定的价格优先、时间优先规则处理竞争。
-      icon: fa-solid fa-arrow-right-arrow-left
-    - title: 成交与账本
-      desc: 把撮合结果变成可去重、可追溯的账户状态和持仓变化。
-      icon: fa-solid fa-book
-    - title: 保证金与价格
-      desc: 将持仓、挂单和可信参考价格放进统一风险判断。
-      icon: fa-solid fa-scale-balanced
-    - title: 强平与缺口处理
-      desc: 风险越界后有序减仓，并定义保险基金等后续处置边界。
-      icon: fa-solid fa-shield-halved
-    - title: 故障恢复与实时推送
-      desc: 通过日志重放、快照和序列号，让系统在中断后恢复一致状态。
-      icon: fa-solid fa-tower-broadcast
 
 chapters:
   eyebrow: 已有章节
