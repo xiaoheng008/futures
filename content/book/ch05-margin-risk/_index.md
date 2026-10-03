@@ -15,7 +15,7 @@ Alice 钱包里有 1,000 USDT，已经持有 BTC 永续仓位，也有两张尚�
 
 # 尝试：把设置的杠杆当成风险结果
 
-常见粗略想法是：名义价值除以杠杆就是保证金。例如 10 倍杠杆，1,000 USDT 能开 10,000 USDT 仓位。这个估算忽略了已有仓位、挂单预留、手续费、风险档位、抵押品折扣、全仓共享盈亏和组合抵消。
+常见粗略想法是：名义价值除以杠杆（**leverage**）就是保证金。例如 10 倍杠杆，1,000 USDT 能开 10,000 USDT 仓位。这个估算忽略了已有仓位、挂单预留、手续费、风险档位（**risk tier**）、抵押品折扣（**collateral haircut**）、全仓共享盈亏和组合抵消。
 
 杠杆更像用户请求或产品配置，系统能否接受仍由当前仓位、风险限额和产品规则共同决定。Bybit 的公开接口把最大仓位价值与风险限额关联；OKX 账户字段则区分权益、初始保证金、维持保证金和挂单冻结额度。[Bybit Set Leverage](https://bybit-exchange.github.io/docs/v5/position/leverage) · [Bybit Risk Limit](https://bybit-exchange.github.io/docs/v5/market/risk-limit) · [OKX API v5 Account](https://app.okx.com/docs-v5/en/)
 
@@ -87,7 +87,7 @@ sequenceDiagram
 
 # 建立一个可推导的简化模型
 
-先只讨论逐仓、线性合约、单一币种、固定维持保证金率，忽略费用、资金费、风险档位和舍入。设多头数量 `q`、开仓价 `P₀`、当前标记价 `P`、逐仓保证金 `M`、维持保证金率 `r`：
+先只讨论逐仓保证金（**isolated margin**）、线性合约、单一币种、固定维持保证金率（**maintenance margin rate**），忽略费用、资金费、风险档位和舍入。设多头数量 `q`、开仓价 `P₀`、当前标记价 `P`、逐仓保证金 `M`、维持保证金率 `r`：
 
 \[\begin{aligned}
 U(P) &= q(P-P_0) \\
@@ -108,7 +108,7 @@ E = 100 - 50 = 50 USDT
 MM = 0.01 × 55,000 × 0.005 = 2.75 USDT
 ```
 
-在本简化模型下尚高于维持要求。解临界价格 `E(P)=MM(P)`：
+在本简化模型下尚高于维持保证金（**maintenance margin, MM**）要求。解临界价格 `E(P)=MM(P)`：
 
 ```text
 100 + 0.01 × (P - 60,000) = 0.01 × P × 0.005
@@ -119,7 +119,7 @@ P ≈ 50,251.26 USDT/BTC
 
 # 账户模式改变风险边界
 
-逐仓把一定保证金分配到特定持仓；全仓通常在较大的账户范围共享抵押品与盈亏；组合保证金还可能根据组合风险估算资金要求。它们会改变“哪些资产共同承担风险”和“什么数值触发处置”，因此保证金模式应是账户状态，不是只在订单请求里出现的一次性参数。
+逐仓保证金（**isolated margin**）把一定保证金分配到特定持仓；全仓保证金（**cross margin**）通常在较大的账户范围共享抵押品与盈亏；组合保证金（**portfolio margin**）还可能根据组合风险估算资金要求。它们会改变“哪些资产共同承担风险”和“什么数值触发处置”，因此保证金模式应是账户状态，不是只在订单请求里出现的一次性参数。
 
 公开接口能观察到这些模式的外部差异，但不能直接揭示内部算法。OKX 文档明确把 `adjEq`、`mmr` 与风险率关联；Bybit 对组合保证金模式可不提供单一仓位的清算价字段。上述差异说明单个“预估强平价”并非任何账户模式都能代表完整风险状态。[OKX Account API](https://app.okx.com/docs-v5/en/) · [Bybit Position WebSocket](https://bybit-exchange.github.io/docs/v5/websocket/private/position)
 

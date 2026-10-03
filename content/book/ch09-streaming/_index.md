@@ -9,18 +9,18 @@ weight: 90
 
 # 问题：本地簿看起来完整，可能已经错了
 
-客户端接收 BTC-USDT 订单簿增量：序号 100、101、103。页面仍能画出买卖盘，但缺少 102 后，本地数量已经不可信。若继续应用 103 之后的消息，错误会被伪装成“实时数据”。
+客户端通过 WebSocket（**WebSocket**）接收 BTC-USDT 订单簿增量（**delta/update**）：序号 100、101、103。页面仍能画出买卖盘，但缺少 102 后，本地数量已经不可信。若继续应用 103 之后的消息，错误会被伪装成“实时数据”。
 
 重连本身不能证明数据连续。客户端需要一种办法识别缺口、丢弃不可信状态并重建。
 
 # 发现：流式数据要说明它是快照还是变化
 
-- **快照**描述某一时点的完整状态，适合建立基线。
-- **增量**描述相对前一状态的变化，带宽低但依赖完整顺序。
+- **快照（snapshot）**描述某一时点的完整状态，适合建立基线。
+- **增量（delta/update）**描述相对前一状态的变化，带宽低但依赖完整顺序。
 - **成交事件**描述不可重复计数的交易事实，不能简单当成簿深度变化。
 - **账户/订单事件**描述私有状态更新，不等于公共行情，也未必能独立重建全部存量状态。
 
-协议要定义字段、序号、水位、心跳、过期和重新订阅行为。接口适配层将不同交易所协议标准化为内部事件类型，同时保留原始 payload 与来源序号，才能在规则变化时定位问题。
+协议要定义字段、序号（**sequence number**）、水位（**watermark**）、心跳（**heartbeat**）、过期和重新订阅行为。接口适配层将不同交易所协议标准化为内部事件类型，同时保留原始 payload 与来源序号，才能在规则变化时定位问题。
 
 # 重建公共本地订单簿
 
@@ -57,7 +57,7 @@ Bybit 公开订单簿流先发 snapshot，再发 delta；出现新 snapshot 时�
 - 将查询响应与流事件在明确水位上合并；
 - 如果无法确认某段事件是否已处理，重新读取权威状态并重建投影。
 
-具体查询和排序保证是各家 API 的公开契约。Binance 在 2026 年公告中把 USDⓈ-M WebSocket 地址拆分成 public、market、private 类别；Bybit 提供单独的 public/private/trade WS 地址；OKX 的 private order channel 需要登录，且首次订阅不发送存量订单快照。[Binance WS Upgrade](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a) · [Bybit WS Connect](https://bybit-exchange.github.io/docs/v5/ws/connect) · [OKX API v5](https://app.okx.com/docs-v5/en/)
+具体查询和排序保证是各家 API 的公开契约。Binance 在 2026 年公告中把 USDⓈ-M WebSocket 地址拆分成 public、market、private 类别；Bybit 提供单独的 public/private/trade WS 地址；OKX 的 private order channel 需要登录，且首次订阅不发送存量订单快照。REST API（**Representational State Transfer API**）可用于补查权威状态，但查询结果和实时流仍需按水位合并。[Binance WS Upgrade](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a) · [Bybit WS Connect](https://bybit-exchange.github.io/docs/v5/ws/connect) · [OKX API v5](https://app.okx.com/docs-v5/en/)
 
 # 把“推送”理解成缓存更新通道
 

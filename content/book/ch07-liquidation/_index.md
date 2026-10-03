@@ -9,19 +9,19 @@ weight: 70
 
 # 问题：保证金线被触及时，系统要做什么？
 
-风险引擎发现仓位权益接近维持要求。它不能只把仓位状态改成 `LIQUIDATED`：市场里还存在真实订单簿、挂单竞争、滑点、费用和可能的资产缺口。必须明确触发、减险、成交、结算、缺口处理和账户恢复是一条工作流。
+风险引擎（**risk engine**）发现仓位权益接近维持要求。它不能只把仓位状态改成 `LIQUIDATED`：市场里还存在真实订单簿、挂单竞争、滑点（**slippage**）、费用和可能的资产缺口。必须明确触发、减险、成交、结算、缺口处理和账户恢复是一条工作流。
 
 # 尝试：在强平价直接“卖出”
 
 强平触发价、破产价和市场实际成交价是不同概念：
 
-- **触发条件/触发价**：系统判断需要接管或减仓的风险边界，可能按 mark 或账户维持保证金率判定。
-- **破产价**：简化理解为仓位保证金被耗尽的参考价格，具体定义随合约和账户模式变化。
-- **执行价**：强平单在当时市场中实际成交的价格，受到深度和滑点影响。
+- **触发条件/触发价（liquidation trigger / trigger price）**：系统判断需要接管或减仓的风险边界，可能按 mark 或账户维持保证金率判定。
+- **破产价（bankruptcy price）**：简化理解为仓位保证金被耗尽的参考价格，具体定义随合约和账户模式变化。
+- **执行价（execution price）**：强平单在当时市场中实际成交的价格，受到深度和滑点影响。
 
 假设多仓标记价触发强平价为 65,000 USDT，破产价为 64,000 USDT，而实际平仓在 64,980 成交。以简化线性模型看，执行价好于破产价，可能留下可回收剩余；若只能在 63,950 成交，则实际亏损越过破产价，需要某种缺口处理。真实交易所的结算、费用、分摊及清算规则需查产品条款。
 
-Bybit 的公开保险基金说明将实际执行价与破产价的差额作为基金增减来源之一；Binance 说明保险基金用于覆盖破产仓位破产价与执行价之间的差额。它们都说明强平价不等于保证成交价。[Bybit Insurance Fund](https://www.bybit.com/en/help-center/article/Insurance-Fund) · [Binance Futures Insurance Funds](https://www.binance.com/en/support/faq/detail/360033525371)
+Bybit 的公开保险基金（**insurance fund**）说明将实际执行价与破产价的差额作为基金增减来源之一；Binance 说明保险基金用于覆盖破产仓位破产价与执行价之间的差额。它们都说明强平价不等于保证成交价。[Bybit Insurance Fund](https://www.bybit.com/en/help-center/article/Insurance-Fund) · [Binance Futures Insurance Funds](https://www.binance.com/en/support/faq/detail/360033525371)
 
 # 发现：强平是状态机，不是一次价格计算
 
@@ -63,7 +63,7 @@ Bybit 对较高风险档位描述了分层清算；其 UTA 清算规则也列举
 1. 从强平仓位的可用保证金/权益承担损失；
 2. 执行优于破产价的剩余金额进入对应风险池或按规则处理；
 3. 执行劣于破产价形成的缺口由保险基金或规则指定资金承担；
-4. 若基金不能覆盖，可能对盈利对手仓位执行自动减仓（ADL）或其他产品规定的损失分配。
+4. 若基金不能覆盖，可能对盈利对手仓位执行自动减仓（**auto-deleveraging, ADL**）或其他产品规定的损失分配。
 
 这只是通用压力链，并不意味着各交易所一定采用完全相同的层级、池化方式、排序或触发条件。Bybit 和 Binance 的公开说明都将 ADL 关联到保险基金无法吸收的特定亏损，但详细筛选规则不同，必须单独核对。[Bybit ADL](https://www.bybit.com/nl-NL/help-center/article?id=000001124) · [Binance Insurance Funds](https://www.binance.com/en/support/faq/detail/360033525371)
 
