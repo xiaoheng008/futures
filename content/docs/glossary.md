@@ -48,6 +48,9 @@ weight: 15
 | 已接受 | accepted | 请求通过相应校验并进入后续处理；不等于完全成交 |
 | 已拒绝 | rejected | 请求未被接受或订单被规则拒绝 |
 | 部分成交 | partially filled | 已有部分数量成交，订单仍有剩余量 |
+| 累计成交量 | cumulative filled quantity (CumQty) | 订单至今实际成交的数量 |
+| 活动剩余量 | working leaves quantity | 仍可继续撮合的订单余量；实际 LeavesQty 的终态语义依接口定义 |
+| 已撤销量 | canceled quantity | 被取消而未成交的数量，用于解释终态数量守恒 |
 | 完全成交 | filled | 原订单数量全部成交 |
 | 撤销 | cancel / canceled | 阻止剩余未成交数量继续参与交易；不回滚已成交部分 |
 | 有效期 | time in force (TIF) | 限定订单何时失效及未成交余量如何处理的规则 |
@@ -86,6 +89,7 @@ weight: 15
 |---|---|---|
 | 成交记录 | fill / execution | 一次撮合产生的价格、数量、双方订单等事实 |
 | 成交 ID | fill ID / execution ID / trade ID | 唯一标识成交事实的 ID；不同接口命名不同 |
+| 加权平均成交价 | weighted average execution price | 各成交价格按成交数量加权后得到的平均价格 |
 | 账本 | ledger | 按业务事实记录资产增减的权威账务记录 |
 | 日记账批次 | journal entry / journal batch | 一组关联的账务分录 |
 | 账本分录 | ledger entry / posting | 对某账户、资产和账务类别记录的金额变化 |
@@ -145,6 +149,8 @@ weight: 15
 | 破产价 | bankruptcy price | 仓位可用风险权益耗尽的参考价，产品算法各异 |
 | 执行价 | execution price | 强平订单实际成交的价格 |
 | 强平引擎 | liquidation engine | 监控风险并协调清算/减仓动作的系统组件 |
+| 子订单 | child order | 为执行一条处置或策略指令而创建的具体市场订单 |
+| 在途订单 | in-flight order | 已发送或正在执行、最终结果尚未确认的订单 |
 | 保险基金 | insurance fund | 按产品规则用于处理特定强平盈亏差额或缺口的资金池 |
 | 自动减仓 | auto-deleveraging (ADL) | 按规则减少特定对手方仓位以处理系统性缺口的机制 |
 | 亏损缺口 | loss deficit / liquidation deficit | 仓位可承担权益不足以覆盖执行损失时的差额 |
@@ -242,6 +248,6 @@ weight: 15
 | 权威事实 | authoritative fact | 后续投影和恢复应以之为依据的已持久化业务记录 |
 | 端到端链路 | end-to-end flow | 从输入请求直到结算、恢复和客户端状态更新的完整路径 |
 | 不变量 | invariant | 在所有合法状态和转换中都必须持续成立的条件 |
-| 数量守恒 | quantity conservation | 原订单数量可由累计成交量与剩余量解释的约束 |
+| 数量守恒 | quantity conservation | 原订单数量能由累计成交、活动余量及已撤销/过期数量解释的约束 |
 | 账户投影 | account projection | 从账本、成交和资金事件计算出的账户查询视图 |
 | 重建 | reconstruction | 从问题、事实和规则重新推导系统状态或概念的过程 |

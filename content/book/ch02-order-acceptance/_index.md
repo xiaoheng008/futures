@@ -53,6 +53,8 @@ Alice 提交 `BUY 0.01 @ 60,000`。先假设卖盘没有可成交价格：
 
 每一步都能用数量守恒（**quantity conservation**）检查：`0.01 = 0.004 + 0.006`。幂等键（**idempotency key**）处理重复命令，成交 ID（**fill ID / execution ID**）处理重复成交；两者解决的是不同问题。
 
+撤单确认后，上面的 `0.006` 是已撤销的未成交数量，不再是活动挂单余量。教学模型可记录“原始数量＝累计成交＋活动余量＋已撤销/过期数量”；真实 API 对终态剩余字段的定义需要单独读取。
+
 这只是教学模型。具体交易所的状态名、终态规则和事件字段以对应 API 文档为准。核心观察是：**响应确认请求被接收，不等价于成交确认**。Bybit 明确说明创建订单响应是异步接受确认，应通过 WebSocket 确认订单状态；OKX 的订单频道首次订阅不推存量快照，只推新订单或更新；Binance 在 2026 年公告中将 USDⓈ-M WebSocket 路由拆分为 public、market、private 类别。它们的细节不同，但都提醒我们：客户端确认、状态查询和异步事件必须分别建模。[Bybit 下单接口](https://bybit-exchange.github.io/docs/v5/order/create-order) · [OKX API 文档](https://app.okx.com/docs-v5/en/) · [Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)
 
 # 概念：命令、状态和事实
