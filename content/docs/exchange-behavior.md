@@ -13,7 +13,7 @@ Binance、Bybit、OKX 对外暴露的 API 和流协议，是我们能核验的�
 |---|---|---|---|
 | 创建订单接口 | REST 与 WebSocket 接口均按其合约 API 文档定义；部署/路由细节可能升级 | REST `POST /v5/order/create`；文档明确响应是异步接受确认 | REST `POST /api/v5/trade/order`；另有私有 WS 订单频道 |
 | 后续状态观察 | 2026 年公告将 USDⓈ-M WebSocket 分为 `/public`、`/market`、`/private` 类别；私有流承载用户事件 | 文档要求通过 WebSocket 确认订单状态；公共与私有流分离 | 私有 `/ws/v5/private` 的 `orders` 频道；首次订阅不推存量快照，只推新订单/更新 |
-| 订单簿数据 | 以 USDⓈ-M 产品对应的 market stream 文档为准，留意公告中的迁移和路由变化 | 公共订单簿发 snapshot 后持续推 delta；新 snapshot 要重置本地簿 | 不同频道有快照/增量与不同频率；2026 年日志要求指定频道用 `seqId/prevSeqId` 检查连续性，不再依赖旧 checksum |
+| 订单簿数据 | 以 USDⓈ-M 产品对应的 market stream 文档为准，留意公告中的迁移和路由变化 | 支持增量的深度频道发 snapshot 后推 delta；新 snapshot 重置本地簿；一档频道仅发 snapshot | 不同频道有快照/增量与不同频率；2026 年日志要求指定频道用 `seqId/prevSeqId` 检查连续性，不再依赖旧 checksum |
 | 从中可推导的工程要求 | 接口适配层不能把所有 WS 流假设为同一业务类型；升级需要兼容与迁移计划 | 客户端须区分命令 ACK、订单状态、成交事件，并实现本地簿恢复 | 订阅 orders 不能当作首次状态查询；需组合 REST 快照/查询与后续推送，并用序号检测缺口 |
 
 来源：[Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)、[Binance USDⓈ-M Futures API 文档入口](https://developers.binance.com/en/docs/derivatives/usds-margined-futures/Introduction)、[Bybit 创建订单](https://bybit-exchange.github.io/docs/v5/order/create-order)、[Bybit 私有订单流](https://bybit-exchange.github.io/docs/v5/websocket/private/order)、[Bybit 订单簿流](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)、[OKX API v5](https://app.okx.com/docs-v5/en/)、[OKX API 变更日志](https://app.okx.com/docs-v5/log_en/)。

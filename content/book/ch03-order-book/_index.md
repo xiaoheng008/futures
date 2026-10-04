@@ -71,7 +71,7 @@ flowchart TD
 
 订单簿回答“当前有哪些尚未完成的委托可以匹配”，它不是成交历史，也不是账户余额的权威来源。成交发生后，至少要产生可识别的成交事实；订单簿删除了已完成委托，并不意味着系统可以丢掉成交记录。
 
-可观察的公开 API 也有不同层次：Bybit 的公开订单簿流发出 snapshot 和 delta，客户端必须按协议重置/更新本地簿；这描述的是客户端行情重建契约，不足以说明撮合引擎内部数据结构。[Bybit Orderbook WebSocket](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)
+可观察的公开 API 也有不同层次：Bybit 支持增量的订单簿深度频道发出 snapshot 和 delta（一档频道仅发 snapshot），客户端必须按协议重置/更新本地簿；这描述的是客户端行情重建契约，不足以说明撮合引擎内部数据结构。[Bybit Orderbook WebSocket](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)
 
 # 实验：让规则变得可见
 

@@ -251,3 +251,14 @@ weight: 15
 | 数量守恒 | quantity conservation | 原订单数量能由累计成交、活动余量及已撤销/过期数量解释的约束 |
 | 账户投影 | account projection | 从账本、成交和资金事件计算出的账户查询视图 |
 | 重建 | reconstruction | 从问题、事实和规则重新推导系统状态或概念的过程 |
+
+
+## 字段与单位补充
+
+| 中文术语 | English | 说明 |
+|---|---|---|
+| 维持保证金要求金额 | maintenance margin requirement | 金额；OKX 账户余额接口的 `mmr` 以 USD 计，须核对账户模式 |
+| 维持保证金率 | maintenance margin rate | 比例；本书模型使用 `r`，不能直接替换为同名缩写的 API 金额字段 |
+| 保证金比率 | margin ratio | 无量纲比率；分子、分母与触发方向必须按账户模式核验 |
+| 预留转换 | reservation conversion | 成交将订单预留转为持仓占用，撤销只释放尚未成交部分 |
+| 序号重置 | sequence reset | 协议允许的水位重新编号；应按前驱关系衔接 |

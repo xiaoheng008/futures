@@ -29,7 +29,7 @@ weight: 90
 1. 建立连接并订阅指定产品/深度频道。
 2. 按协议获取快照；将其标记为当前可信基线。
 3. 对后续增量检查序号/前序号关系。只有连续的更新才应用。
-4. 遇到缺口、重复之外的序号倒退、非法数量或过期时间时，将本地簿标记为不可信。
+4. 遇到缺口、协议不允许的序号倒退、非法数量或过期时间时，将本地簿标记为不可信。
 5. 重新取快照，并按协议处理快照期间缓存的增量；不能简单把最新一条 delta 当成新快照。
 6. 对下游标出数据新鲜度和连续性状态，避免把修复中的簿用于交易决策。
 
@@ -45,7 +45,7 @@ flowchart TD
   R --> V
 ```
 
-Bybit 公开订单簿流先发 snapshot，再发 delta；出现新 snapshot 时客户端应重置本地簿。[Bybit Orderbook](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook) OKX 的变更日志要求特定增量频道用 `seqId/prevSeqId` 检查连续性，并明确旧 checksum 字段不再作为有效完整性校验。[OKX API Changelog](https://app.okx.com/docs-v5/log_en/)
+Bybit 支持增量的深度频道先发 snapshot，再发 delta；出现新 snapshot 时客户端应重置本地簿。线性、反向和现货的一档频道只有 snapshot，不能套用增量状态机。[Bybit Orderbook](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook) OKX 的变更日志要求特定增量频道用 `seqId/prevSeqId` 检查连续性，并明确旧 checksum 字段不再作为有效完整性校验。[OKX API Changelog](https://app.okx.com/docs-v5/log_en/)
 
 # 私有事件流的恢复不完全相同
 
@@ -131,3 +131,25 @@ sequenceDiagram
 - **推导**：收到序号 `100、101、103`，列出客户端的可信状态变化和必须执行的恢复动作。
 - **应用**：快照生成期间又到达一批增量；设计缓冲与水位校验，避免把旧增量应用到新快照上。
 - **重建**：从“网络连接不保证消息连续”推导序号、快照、缺口检测、重同步，以及公共簿与私有账户状态各自的权威来源。
+
+
+# 从教学序号走向真实协议
+
+先预测：水位是 10，下一条消息的 `prevSeqId=10, seqId=15`，是否缺了四条消息？
+
+在 OKX 的 `books`、`books-l2-tbt` 和 `books50-l2-tbt` 增量协议中，应检查上一条水位与本条 `prevSeqId` 的衔接，而非要求 `seqId` 恰好加一。以下序列按官方规则构造：
+
+| 消息 | prevSeqId | seqId | 客户端动作 |
+|---|---:|---:|---|
+| 初始快照 | -1 | 10 | 建立本地簿，水位设为 10 |
+| 正常增量 | 10 | 15 | 前驱匹配，应用档位更新，水位设为 15 |
+| 空买卖盘心跳 | 15 | 15 | 保持本地簿和水位；连接仍活跃 |
+| 维护期间序号重置 | 15 | 3 | 前驱仍匹配，按协议应用更新，水位改为 3 |
+| 重置后的增量 | 3 | 5 | 前驱匹配，继续更新 |
+| 下一条异常增量 | 8 | 9 | 当前水位 5 与前驱 8 不匹配，停止应用并重建 |
+
+因此，维护期间允许的序号回退不能直接当作旧消息丢弃。也不能只因看到较小序号就允许任意回退：仍须验证频道、产品、消息类型与前驱关系。连接切换时应隔离旧连接消息，避免混入新水位。
+
+当前文档还明确：上述三个频道的 `checksum` 已弃用、固定为 0，不能用它证明订单簿正确。[OKX Order Book / Sequence ID](https://app.okx.com/docs-v5/en/#order-book-trading-market-data-ws-order-book-channel)
+
+重建任务：用表中消息写出本地水位的变化，再插入一条来自旧连接的消息，说明怎样识别并隔离它。
