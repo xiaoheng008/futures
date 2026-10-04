@@ -6,7 +6,7 @@
 
 ## 内容状态
 
-第 1–11 章均已有工作初稿和配套实验，仍待统一技术审校。在线首页和[课程路线](content/roadmap.md)标出当前稿件状态。OINK 从 `content/book/` 自动生成 Book 导航，目录树是唯一章节顺序来源。
+**v1.0 已定稿，2026-10-05。**第 1–11 章均含正文、递进算例、图示、实验提示与参考解答，已完成本版技术和发布审校。查看[定稿说明](content/docs/release.md)及[审校记录](content/docs/technical-review.md)。在线地址：https://xiaoheng008.github.io/futures/ 。OINK 从 `content/book/` 自动生成 Book 导航，目录树是唯一章节顺序来源。
 
 ## 本地阅读
 

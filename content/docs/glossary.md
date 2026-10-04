@@ -110,7 +110,7 @@ weight: 15
 | 中文术语 | English | 说明 |
 |---|---|---|
 | 保证金 | margin | 支持衍生品仓位风险的抵押或风险额度 |
-| 初始保证金 | initial margin (IM) | 开仓或维持仓位所需的初始风险额度 |
+| 初始保证金 | initial margin (IM) | 建立或增加风险敞口所需的初始保证金要求 |
 | 维持保证金 | maintenance margin (MM) | 持仓继续维持所需的最低风险权益要求 |
 | 逐仓保证金 | isolated margin | 风险额度主要限定在单个仓位或指定隔离范围内的模式 |
 | 全仓保证金 | cross margin | 账户范围共享抵押品与盈亏的保证金模式 |
@@ -233,7 +233,7 @@ weight: 15
 |---|---|---|
 | `tickSize` / `tickSz` | tick size | 最小价格变动单位；字段名依交易所而异 |
 | `qtyStep` / `lotSz` | quantity step / lot size | 最小下单数量单位；字段名依产品而异 |
-| `ctVal` | contract value | OKX 等接口中的合约面值字段，须结合 `ctType` 和产品规则读取 |
+| `ctVal` | contract value | OKX 等接口中的合约面值字段，须结合 `ctType`、`ctValCcy`、`ctMult` 和产品规则读取 |
 | `ctType` | contract type | 合约计价/类型标识，枚举含义以接口文档为准 |
 | `seqId` / `prevSeqId` | sequence ID / previous sequence ID | OKX 等流协议用于检查增量连续性的序号字段 |
 | `checksum` | checksum | 部分协议中的数据校验字段；是否有效及算法依当前文档 |
@@ -262,3 +262,27 @@ weight: 15
 | 保证金比率 | margin ratio | 无量纲比率；分子、分母与触发方向必须按账户模式核验 |
 | 预留转换 | reservation conversion | 成交将订单预留转为持仓占用，撤销只释放尚未成交部分 |
 | 序号重置 | sequence reset | 协议允许的水位重新编号；应按前驱关系衔接 |
+
+
+## 定稿补充术语
+
+| 中文术语 | English | 说明 |
+|---|---|---|
+| 单向持仓模式 | one-way position mode | 同产品多空按规则净额抵消 |
+| 双向持仓模式 | hedge mode / two-way position mode | 按独立多空作用域维护仓位 |
+| 净敞口 / 总敞口 | net exposure / gross exposure | 净方向规模与绝对规模合计，不能混用 |
+| 持仓平均入场价 | average entry price | 仓位的成本参考价；不一定等于某一张订单的平均执行价 |
+| 结算批次 | settlement batch | 一组有明确完成边界的结算义务 |
+| 清算对手科目 | clearing counterparty account | 用于记录结算对应方与待履行义务的会计作用域 |
+| 待结算义务 | unsettled obligation | 已有事实依据但尚未完成结算的资产责任 |
+| 手续费率 / 返佣 | trading fee rate / rebate | 实际费用和可能的负费用，须记录角色、版本和币种 |
+| 整数溢出 | integer overflow | 超出数值表示范围导致错误的情况 |
+| 定点数 / 舍入 | fixed-point number / rounding | 金额精度表示与不能精确落在结算单位上的数值处理 |
+| 前驱序号 | previous sequence ID | 用于衔接本条消息与上一水位的协议字段 |
+| 连接代次 | connection generation | 区分新旧连接消息、防止旧消息混入新基线的客户端标识 |
+| 截止时间 | deadline | 请求必须完成或在承诺前拒绝的时间边界 |
+| 重试抖动 | retry jitter | 为退避等待引入随机分散，减轻集中重连 |
+| 恰好一次业务效果 | exactly-once effect | 重复投递下每个业务用途只产生一次效果，并非保证消息只送一次 |
+| 服务等级目标 | service level objective (SLO) | 在指定负载和范围内可衡量的服务目标 |
+| 统一交易账户 | Unified Trading Account (UTA) | Bybit 账户体系名称；内部风险范围依具体模式定义 |
+| 零权益参考价 | zero-equity reference price | 本书简化模型中权益为零的价格，不代替真实破产结算规则 |

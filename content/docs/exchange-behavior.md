@@ -7,7 +7,7 @@ title: 三家主流交易所的公开接口观察
 
 Binance、Bybit、OKX 对外暴露的 API 和流协议，是我们能核验的系统行为。它们不能反推出撮合引擎使用的线程模型、存储引擎或服务拓扑。把“公开 API 契约”与“架构推论”分开，避免把书中的参考设计误写成交易所内部事实。
 
-资料核对日期：2026-10-03。具体适用合约类型、账户地区和产品版本，请以每个源页面的范围为准。
+资料复核日期：2026-10-05。具体适用合约类型、账户地区和产品版本，请以每个源页面的范围为准。
 
 | 观察面 | Binance USDⓈ-M Futures | Bybit V5 | OKX API V5 |
 |---|---|---|---|
@@ -16,7 +16,7 @@ Binance、Bybit、OKX 对外暴露的 API 和流协议，是我们能核验的�
 | 订单簿数据 | 以 USDⓈ-M 产品对应的 market stream 文档为准，留意公告中的迁移和路由变化 | 支持增量的深度频道发 snapshot 后推 delta；新 snapshot 重置本地簿；一档频道仅发 snapshot | 不同频道有快照/增量与不同频率；2026 年日志要求指定频道用 `seqId/prevSeqId` 检查连续性，不再依赖旧 checksum |
 | 从中可推导的工程要求 | 接口适配层不能把所有 WS 流假设为同一业务类型；升级需要兼容与迁移计划 | 客户端须区分命令 ACK、订单状态、成交事件，并实现本地簿恢复 | 订阅 orders 不能当作首次状态查询；需组合 REST 快照/查询与后续推送，并用序号检测缺口 |
 
-来源：[Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)、[Binance USDⓈ-M Futures API 文档入口](https://developers.binance.com/en/docs/derivatives/usds-margined-futures/Introduction)、[Bybit 创建订单](https://bybit-exchange.github.io/docs/v5/order/create-order)、[Bybit 私有订单流](https://bybit-exchange.github.io/docs/v5/websocket/private/order)、[Bybit 订单簿流](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)、[OKX API v5](https://app.okx.com/docs-v5/en/)、[OKX API 变更日志](https://app.okx.com/docs-v5/log_en/)。
+来源：[Binance USDⓈ-M WS 升级公告](https://www.binance.com/en/support/announcement/detail/ebf9b0aa9eca4ff3804eef6fb09ba32a)、[Binance USDⓈ-M Futures API 文档入口](https://developers.binance.com/en/docs/products/derivatives-trading-usds-futures/general-info)、[Bybit 创建订单](https://bybit-exchange.github.io/docs/v5/order/create-order)、[Bybit 私有订单流](https://bybit-exchange.github.io/docs/v5/websocket/private/order)、[Bybit 订单簿流](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)、[OKX API v5](https://app.okx.com/docs-v5/en/)、[OKX API 变更日志](https://app.okx.com/docs-v5/log_en/)。
 
 # 从外部契约到内部系统：哪些是推论？
 
@@ -39,4 +39,4 @@ Binance、Bybit、OKX 对外暴露的 API 和流协议，是我们能核验的�
 
 # 新问题
 
-产品接口会变，但交易系统必须守住不变量。最终问题是：无论上游接口如何差异化，内部如何把规范化命令、订单状态和成交事实连接起来？回到第 10 章重建。
+产品接口会变，但交易系统必须守住不变量。最终问题是：无论上游接口如何差异化，内部如何把规范化命令、订单状态和成交事实连接起来？回到第 11 章重建。
