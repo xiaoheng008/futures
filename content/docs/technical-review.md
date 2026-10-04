@@ -28,3 +28,8 @@ weight: 25
 - [OKX Order Book](https://app.okx.com/docs-v5/en/#order-book-trading-market-data-ws-order-book-channel)：前驱序号、维护重置、弃用 checksum。
 
 后续继续逐章核对引用、实验答案和图示表达，再决定哪些章节可以结束草稿状态。
+
+
+## 第 1 章定稿审校
+
+补齐了线性与反向规格的对照推导、数量符号和正数假设、整数溢出与结算舍入边界。实验第四步答案、四级掌握检查和渐进提示已补全。再次核对 Bybit 与 OKX 公开规格字段，保留教学参数与实际产品参数的区分。章节暂保留草稿标记，页面视觉审校尚待完成。
